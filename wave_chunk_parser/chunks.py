@@ -527,6 +527,8 @@ class CartChunk(Chunk):
     DEFAULT_VERSION = b"0101"
     FORMAT_DATE_TIME = "%Y/%m/%d%H:%M:%S"
     FORMAT_DATE_REAPER = "%Y-%m-%d"
+    FORMAT_DATE_REAPER2 = "%m/%d/%Y/%H:%M"
+    FORMAT_DATE_REAPER3 = "%Y-%m-%d%H:%M:%S"
     UNPACK_STRING = (
         "<4s64s64s64s64s64s64s64s18s18s64s64s64si4sI4sI4sI4sI4sI4sI4sI4sI276s"
     )
@@ -728,9 +730,20 @@ class CartChunk(Chunk):
             end_date = datetime(2099, 12, 31, 23, 59, 59)
 
             if decode_string(start_date_str):
-                start_date = datetime.strptime(
-                    decode_string(start_date_str), cls.FORMAT_DATE_REAPER
-                )
+                try:
+                    start_date = datetime.strptime(
+                        decode_string(start_date_str), cls.FORMAT_DATE_REAPER
+                    )
+                except ValueError as e:
+                    try:
+                        start_date = datetime.strptime(
+                            decode_string(start_date_str), cls.FORMAT_DATE_REAPER2
+                        )
+                    except ValueError as e:
+                        start_date = datetime.strptime(
+                            decode_string(start_date_str), cls.FORMAT_DATE_REAPER3
+                        )
+                    
 
         # Build the chunk
 
