@@ -522,13 +522,13 @@ class CartChunk(Chunk):
     Broadcast cart chunk.
     """
 
-    LENGTH_MINIMUM = 2048
+    LENGTH_MINIMUM = 1024 #2048
     HEADER_CART = b"cart"
     DEFAULT_VERSION = b"0101"
     FORMAT_DATE_TIME = "%Y/%m/%d%H:%M:%S"
     FORMAT_DATE_REAPER = "%Y-%m-%d"
     UNPACK_STRING = (
-        "<4s64s64s64s64s64s64s64s18s18s64s64s64si4sI4sI4sI4sI4sI4sI4sI4sI276s1024s"
+        "<4s64s64s64s64s64s64s64s18s18s64s64s64si4sI4sI4sI4sI4sI4sI4sI4sI276s"
     )
     PACK_STRING = (
         "<4sI4s64s64s64s64s64s64s64s18s18s64s64s64si4sI4sI4sI4sI4sI4sI4sI4sI276s1024s"
@@ -606,6 +606,7 @@ class CartChunk(Chunk):
 
         # Read from the chunk
 
+        url = None
         tag_text = None
         unpack_string = cls.UNPACK_STRING
 
@@ -644,7 +645,7 @@ class CartChunk(Chunk):
                 timer_time_7,
                 _,
                 url,
-                tag_text,
+#                tag_text,
             ) = unpack(
                 unpack_string,
                 seek_and_read(
@@ -686,7 +687,7 @@ class CartChunk(Chunk):
                 timer_name_7,
                 timer_time_7,
                 _,
-                url,
+#                url,
             ) = unpack(
                 unpack_string,
                 seek_and_read(
